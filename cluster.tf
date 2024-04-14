@@ -2,6 +2,7 @@
 resource "aws_eks_cluster" "my_cluster" {
   name     = "my-cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
+  version = 1.24
   vpc_config {
     subnet_ids = [aws_subnet.pub1.id, aws_subnet.pub2.id, aws_subnet.pri1.id, aws_subnet.pri2.id]  # Update with your subnet IDs
     security_group_ids = [aws_security_group.eks-sg-1.id,aws_security_group.eks-sg-2.id]  # Update with your security group ID
