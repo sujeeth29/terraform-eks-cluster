@@ -18,6 +18,7 @@ resource "aws_subnet" "pub1" {
     vpc_id = aws_vpc.eks-vpc.id
     cidr_block = "10.0.1.0/24"
     availability_zone = "us-east-1a"
+    map_public_ip_on_launch = true
     tags = {
         Name = "public-1"
     }
@@ -26,6 +27,7 @@ resource "aws_subnet" "pub2" {
     vpc_id = aws_vpc.eks-vpc.id
     cidr_block = "10.0.2.0/24"
     availability_zone = "us-east-1b"
+    map_public_ip_on_launch = true
     tags = {
         Name = "public-2"
     }
@@ -141,29 +143,16 @@ resource "aws_security_group" "eks-sg-3"{
 #-ingress rule -1
 resource "aws_vpc_security_group_ingress_rule" "ingress-sg1-1" {
     security_group_id = aws_security_group.eks-sg-1.id
-    cidr_ipv4 = aws_security_group.eks-sg-1.id
+    cidr_ipv4 = "0.0.0.0/0"
     from_port = 0
     to_port = 0
     ip_protocol = "-1" 
 }
-resource "aws_vpc_security_group_ingress_rule" "ingress-sg1-2" {
-    security_group_id = aws_security_group.eks-sg-1.id
-    cidr_ipv4 = aws_security_group.eks-sg-2.id
-    from_port = 0
-    to_port = 0
-    ip_protocol = "-1" 
-}
+
 ##--------sg-2-ingress
 resource "aws_vpc_security_group_ingress_rule" "ingress-sg2-1" {
     security_group_id = aws_security_group.eks-sg-2.id
-    cidr_ipv4 = aws_security_group.eks-sg-1.id
-    from_port = 0
-    to_port = 0
-    ip_protocol = "-1" 
-}
-resource "aws_vpc_security_group_ingress_rule" "ingress-sg2-2" {
-    security_group_id = aws_security_group.eks-sg-2.id
-    cidr_ipv4 = aws_security_group.eks-sg-2.id
+    cidr_ipv4 = "0.0.0.0/0"
     from_port = 0
     to_port = 0
     ip_protocol = "-1" 
