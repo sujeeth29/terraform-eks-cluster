@@ -36,6 +36,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
+
 # Create node group IAM role
 resource "aws_iam_role" "eks_node_group_role" {
   name               = "eks-node-group-role"
@@ -58,6 +59,10 @@ resource "aws_iam_role_policy_attachment" "eks_node_group_policy_attachment" {
   role       = aws_iam_role.eks_node_group_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
+resource "aws_iam_role_policy_attachment" "example_node_group_cni_policy_attachment" {
+  role       = aws_iam_role.eks_node_group_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
 
 # Create a node group
 resource "aws_eks_node_group" "my_node_group" {
@@ -67,6 +72,7 @@ resource "aws_eks_node_group" "my_node_group" {
     max_size     = 10
     min_size     = 1
   }
+  instance_types = ["t3.medium"]
   node_group_name = "my-node-group"
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
   subnet_ids      = [aws_subnet.pub1.id, aws_subnet.pub2.id]  # Update with your subnet IDs
